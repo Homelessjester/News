@@ -4,19 +4,24 @@ class Article {
     public $title;
     public $text;
 
-    public function __construct($title, $text)
-    {
-        $this->title = $title;
-        $this->text = $text;
-    }
-
     public function view()
     {
         echo $this->title;
-        echo '<br>';
         echo $this->text;
     }
 }
 
-$a = new Article('Title', 'Text');
+class NewsArticle extends Article {
+    public $author;
+
+    public function view($br = '<br>')
+    {
+        echo $this->author . $br . $this->title . $br . $this->text;
+    }
+}
+
+$a = new NewsArticle();
+$a->title = 'Title';
+$a->text = 'text';
+$a->author = 'Author';
 $a->view();
