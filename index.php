@@ -1,8 +1,10 @@
 <?php
 
-class Article {
+abstract class Article {
     public $title;
     public $text;
+
+    static protected $br = '<br>';
 
     public function view()
     {
@@ -14,9 +16,14 @@ class Article {
 class NewsArticle extends Article {
     public $author;
 
-    public function view($br = '<br>')
+    public function view()
     {
-        echo $this->author . $br . $this->title . $br . $this->text;
+        echo $this->author;
+        echo parent::$br;
+        echo $this->title;
+        echo parent::$br;
+        echo $this->text;
+
     }
 }
 
