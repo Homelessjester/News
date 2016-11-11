@@ -1,8 +1,7 @@
 <?php
 
-require __DIR__ . '/classes/DB.php';
+require __DIR__ . '/models/News.php';
 
-$db = new DB('localhost', 'root', '', 'news');
-//$items = $db->query('SELECT * FROM "news"');
-$res = $db->query('SELECT * FROM news');
-var_dump($res);
+$items = News::getAll();
+
+include __DIR__ . '/views/index.php';
