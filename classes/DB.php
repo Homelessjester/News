@@ -10,4 +10,9 @@ class DB extends Mysqli
             die('Ошибка подключения (' . mysqli_connect_errno() . ') ' . mysqli_connect_error());
         }
     }
+
+    public function queryAll($sql, $class = 'stdClass')
+    {
+
+    }
 }
