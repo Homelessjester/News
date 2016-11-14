@@ -15,4 +15,9 @@ class DB extends Mysqli
     {
 
     }
+
+    public function queryOne($sql, $class = 'stdClass')
+    {
+
+    }
 }
