@@ -7,11 +7,7 @@ class News
     public $title;
     public $text;
 
-    protected $table = 'news';
+    protected static $table = __CLASS__;
+    protected static $class =__CLASS__;
 
-    public static function getOne($id)
-    {
-        $db = new DB('localhost', 'root', '', 'news');
-        return $db->queryOne('SELECT * FROM news WHERE id=' . $id, 'News');
-    }
 }
