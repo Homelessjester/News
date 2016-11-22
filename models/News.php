@@ -10,4 +10,8 @@ class News
     protected static $table = __CLASS__;
     protected static $class =__CLASS__;
 
+    public static function getOne()
+    {
+
+    }
 }
