@@ -1,23 +1,11 @@
 <?php
 
 abstract class AbstractModel
-    implements IModel
 {
-    protected static $table;
-    protected static $class;
+    static protected $table;
 
-    public static function getAll()
+    public static function getTable()
     {
-        $db = new DB('localhost', 'root', '', 'news');
-        $sql = 'SELECT * FROM ' . static::$table;
-        return $db->query($sql, MYSQLI_USE_RESULT);
-    }
-
-    public static function getOne($id)
-    {
-        $db = new DB('localhost', 'root', '', 'news');
-        $sql = 'SELECT * FROM ' . static::$table .' WHERE id=' . $id;
-        return $db->queryOne($sql, static::$class);
+        return static::$table;
     }
 }
-

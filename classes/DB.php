@@ -1,23 +1,18 @@
 <?php
 
-class DB extends Mysqli
+class DB
 {
-    public function __construct($host, $user, $pass, $db)
-    {
-        parent::__construct($host, $user, $pass, $db);
+    private $dbh;
 
-        if (mysqli_connect_error()) {
-            die('Ошибка подключения (' . mysqli_connect_errno() . ') ' . mysqli_connect_error());
-        }
+    public function __construct()
+    {
+        $this->dbh = new PDO('mysql:dbname=test;host=localhost', 'root', '');
     }
 
-    public function queryAll($sql, $class = 'stdClass')
+    public function query($sql, $params=[])
     {
-
-    }
-
-    public function queryOne($sql, $class = 'stdClass')
-    {
-
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute($params);
+        return $sth->fetchAll();
     }
 }
