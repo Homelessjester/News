@@ -4,16 +4,11 @@ class NewsController
 {
     public function actionAll()
     {
-        $db = new DB();
-        $res = $db->query('SELECT * FROM news');
-        var_dump($res);
+        $article = new NewsModel();
+        $article->title = 'Привет опять!!!';
+        $article->text = 'Тоже ручная вставка';
+        $article->insert();
         die();
-        /*$news = News::getAll();
-        $view = new View();
-
-        $view->items = $news;
-
-        $view->display('news/all.php');*/
     }
 
     public function actionOne()
