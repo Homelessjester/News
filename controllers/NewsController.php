@@ -4,18 +4,10 @@ class NewsController
 {
     public function actionAll()
     {
-        $article = new NewsModel();
-        $article->title = 'Привет опять!!!';
-        $article->text = 'Тоже ручная вставка';
-        $article->insert();
-        die();
-    }
+        $article = NewsModel::findOneByColumn('title', 'Привет!!!');
+        $article->title = 'New title';
+        $article->save();
+        var_dump($article);
 
-    public function actionOne()
-    {
-        $id = $_GET['id'];
-        $item = News::getOne();
-        $view = new View();
-        $view->render('news/one.php');
     }
 }

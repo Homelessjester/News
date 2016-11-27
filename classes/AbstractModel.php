@@ -16,14 +16,14 @@ abstract class AbstractModel
         return $this->data[$k];
     }
 
-    public static function getTable()
+    public function __isset($k)
     {
-        return static::$table;
+        return isset($this->data[$k]);
     }
 
     public static function findAll()
     {
-        $sql = 'SELECT * FROM ' . static::getTable();
+        $sql = 'SELECT * FROM ' . static::$table;
         $db = new DB();
         $class = get_called_class();
         $db->setClassName($class);
@@ -32,7 +32,7 @@ abstract class AbstractModel
 
     public static function findOneByPk($id)
     {
-        $sql = 'SELECT * FROM ' . static::getTable() .
+        $sql = 'SELECT * FROM ' . static::$table .
             ' WHERE id=:id';
         $db = new DB();
         $class = get_called_class();
@@ -40,7 +40,17 @@ abstract class AbstractModel
         return $db->query($sql, [':id' => $id])[0];
     }
 
-    public function insert()
+    public static function findOneByColumn($column, $value)
+    {
+        $db = new DB();
+        $db->setClassName(get_called_class());
+        $sql = 'SELECT * FROM ' . static::$table .
+            ' WHERE ' . $column . ' LIKE :value';
+        $res = $db->query($sql, [':value' => '%' . $value . '%']);
+        return !empty($res) ? $res : false;
+    }
+
+    private function insert()
     {
         $cols = array_keys($this->data);
         $data = [];
@@ -50,12 +60,42 @@ abstract class AbstractModel
         }
 
          $sql = '
-          INSERT INTO ' . static::getTable() .
+          INSERT INTO ' . static::$table .
         ' (' . implode(', ', $cols) . ') 
         VALUES 
         (' . implode(', ', array_keys($data)) . ')';
 
         $db = new DB();
         $db->execute($sql, $data);
+        $this->id = $db->lastInsertId();
+    }
+
+    private function update()
+    {
+        $cols =[];
+        $data =[];
+        foreach ($this->data as $k => $v) {
+            $data[':' . $k] = $v;
+            if ('id' == $k) {
+                continue;
+            }
+            $cols[] = $k . '=:' . $k;
+        }
+        $sql = '
+            UPDATE ' . static::$table. '
+            SET ' . implode(', ', $cols) . '
+            WHERE id=:id
+        ';
+        $db = new DB();
+        $db->execute($sql, $data);
+    }
+
+    public function save()
+    {
+        if (!isset($this->id)) {
+            $this->insert();
+        } else {
+            $this->update();
+        }
     }
 }
