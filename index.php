@@ -9,6 +9,11 @@ $act = isset($_GET['act']) ? $_GET['act'] : 'All';
 $controllerClassName = $ctrl . 'Controller';
 
 $controller = new $controllerClassName();
-
-$method = 'action' . $act;
-$controller->$method();
+try {
+    $method = 'action' . $act;
+    $controller->$method();
+} catch (Exception $e) {
+    $view = new View();
+    $view->error = $e->getMessage();
+    $view->display('error.php');
+}

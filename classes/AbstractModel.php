@@ -47,7 +47,11 @@ abstract class AbstractModel
         $sql = 'SELECT * FROM ' . static::$table .
             ' WHERE ' . $column . ' LIKE :value';
         $res = $db->query($sql, [':value' => '%' . $value . '%']);
-        return !empty($res) ? $res : false;
+        if (!empty($res)) {
+            return $res;
+        } else {
+            throw new ModelException('Ничего не найдено');
+        }
     }
 
     private function insert()
